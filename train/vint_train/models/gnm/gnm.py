@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from typing import List, Dict, Optional, Tuple
 from vint_train.models.gnm.modified_mobilenetv2 import MobileNetEncoder
 from vint_train.models.base_model import BaseModel
-from vint_train.goal_encoder import GoalEncoder
+from vint_train.models.object_react.goal_encoder import GoalEncoder
 
 
 class GNM(BaseModel):

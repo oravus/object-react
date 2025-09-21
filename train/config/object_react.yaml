@@ -1,0 +1,78 @@
+
+project_name: object_rel_nav
+run_name: object_react
+
+# KEY PARAMS
+mode: train # [train, vis, eval]
+predict_dists: True
+goal_type: "image_mask_enc" # ["image", "disabled", "image_mask_enc"]
+obs_type: "disabled" # ["image", "disabled", "image_mask_enc"]
+dims: 8
+goal_uses_context: False
+
+# training setup
+use_wandb: True # set to false if you don't want to log to wandb
+batch_size: 128
+eval_batch_size: 32
+epochs: 30
+gpu_ids: [0]
+num_workers: 12
+eval_num_workers: 4
+lr: 7e-4
+optimizer: adam
+seed: 0
+
+# model params
+model_type: gnm
+obs_encoding_size: 1024
+goal_encoding_size: 1024
+
+# normalization for the action space
+normalize: True
+
+# context
+context_type: temporal # [temporal, randomized]
+context_size: 5
+
+# tradeoff between action and distance prediction loss
+alpha: 0.5
+
+# distance bounds for distance and action and distance predictions 
+distance:
+  min_dist_cat: 0
+  max_dist_cat: 20
+action:
+  min_dist_cat: 2
+  max_dist_cat: 10
+close_far_threshold: 10 # distance threshold used to seperate the close and the far  subgoals that are sampled per datapoint
+
+# action output params
+len_traj_pred: 10
+learn_angle: True
+
+# dataset specific parameters
+image_size: [85, 64] # width, height
+
+precomputed_filename: ./vint_train/data/data_splits/training/bigger_bot_0.3-sh_0.4/bigger_bot_0.3-sh_0.4_gt_topometric_e3d_masks_pls.h5
+pl_perturb_ratio: 0.3 # \in [0, 1.0], where 0 disables it
+pl_perturb_type: max_val # from ["max_val", "rand_from_inliers"]
+mask_crop_ratio: 1.0 # \in [0, 1.0], where 1.0 disables it
+
+datasets:
+  bigger_bot_0.3-sh_0.4:
+    data_folder: ./vint_train/data/data_splits/training/bigger_bot_0.3-sh_0.4/trajectories/
+    train: ./vint_train/data/data_splits/training/bigger_bot_0.3-sh_0.4/train/
+    test: ./vint_train/data/data_splits/training/bigger_bot_0.3-sh_0.4/test/
+    end_slack: 10
+    goals_per_obs: 2 # increase dataset size
+    negative_mining: True
+    images_subfolder: images
+
+# logging stuff
+## =0 turns off
+print_log_freq: 100 # in iterations
+image_log_freq: 1000 # in iterations
+num_images_log: 8 # number of images to log in a logging iteration
+pairwise_test_freq: 20 # in epochs
+wandb_log_freq: 10 # in iterations
+eval_freq: 1 # in epochs

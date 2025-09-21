@@ -140,9 +140,9 @@ class ViNT_Dataset(Dataset):
             self.num_action_params = 2
 
         if self.goal_type == "image_mask_enc" or self.obs_type == "image_mask_enc":
-            from train.vint_train import objectreact_dataloader
+            from vint_train.models.object_react import dataloader
 
-            self.topopaths = objectreact_dataloader.TopoPaths(
+            self.topopaths = dataloader.TopoPaths(
                 dims=self.kwargs["dims"],
                 precomputed_filename=self.kwargs["precomputed_filename"],
                 pl_perturb_ratio=self.kwargs["pl_perturb_ratio"],
